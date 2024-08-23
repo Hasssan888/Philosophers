@@ -5,7 +5,7 @@ FLAGC = -Wall -Wextra -Werror -g3 -fsanitize=thread
 NAME = philo
 
 
-SRC = philo_utilis.c philo.c
+SRC = philo_utilis.c philo.c init_data.c monitor.c routine.c utils.c
 
 
 OBJE = ${SRC:.c=.o}
