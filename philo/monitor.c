@@ -1,0 +1,48 @@
+#include "philo.h"
+
+
+void    *monitor(void *args)
+{
+    t_data *data;
+    int i;
+
+    data = (t_data *)args;
+    data->full_philos = 0;
+    usleep(100);
+    while (1)
+    {
+        i = 0; 
+        while(i < data->philo_nb)
+        {
+            pthread_mutex_lock(&data->mutex_full);
+            pthread_mutex_lock(&data->mutex_flag_eat);
+            if (data->meals_nb > 0 && data->philo[i].meals_eat >= data->meals_nb)
+            {
+                data->full_philos++;
+                if (data->full_philos == data->philo_nb)
+                {
+                    data->is_full = 1;
+                    pthread_mutex_unlock(&data->mutex_full);
+                    pthread_mutex_unlock(&data->mutex_flag_eat);
+                    return (NULL);
+                }
+            }
+            pthread_mutex_unlock(&data->mutex_full);
+            pthread_mutex_unlock(&data->mutex_flag_eat);
+
+            pthread_mutex_lock(&data->last_meal_eat);
+            if (get_time() - data->philo[i].last_meal_time > data->time_to_die )
+            {
+                pthread_mutex_unlock(&data->last_meal_eat);
+                pthread_mutex_lock(&data->mutex_is_dead);
+                data->is_die = 1;
+                pthread_mutex_unlock(&data->mutex_is_dead);
+                printf("%ld %d died\n", get_time() - data->start, data->philo[i].id);
+                return (NULL);
+            }
+            pthread_mutex_unlock(&data->last_meal_eat);
+            usleep(200);
+            i++;
+        }
+    }
+}
