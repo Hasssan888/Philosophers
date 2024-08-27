@@ -50,7 +50,7 @@ int	ft_usleep(t_data *data, long milliseconds)
             break;
         }
         pthread_mutex_unlock(&data->mutex_is_dead);
-		usleep(100);
+		usleep(10);
     }
 	return (0);
 }

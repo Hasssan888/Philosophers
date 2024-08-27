@@ -2,7 +2,7 @@
 
 int init_mutex(t_data *data)
 {
-    pthread_mutex_init(&data->last_meal_eat , NULL);
+
     pthread_mutex_init(&data->mutex_full , NULL);
     pthread_mutex_init(&data->mutex_is_dead , NULL);
     pthread_mutex_init(&data->mutex_flag_eat , NULL);
@@ -41,9 +41,11 @@ int init_each_philo(t_data *data)
         data->philo[i].last_meal_time = get_time();
         data->philo[i].data = data;
         data->philo[i].meals_eat = 0;
+	    data->philo[i].is_eating = 0;
         data->is_full = 0;
         data->is_die = 0;
         data->flag_eat = 0;
+        pthread_mutex_init(&data->philo[i].last_meal_eat, NULL);
 
     }
     assign_forks(data);

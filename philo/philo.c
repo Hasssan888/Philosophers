@@ -17,7 +17,7 @@ int check_args(int ac, char **av)
         {
             if (!(av[i][j] >= '0' && av[i][j] <= '9'))
             {
-                write(2, "error: you must be \n", 16);
+                write(2, "error: input doesn't much \n", 27);
                 return (1);
             }
             j++;
